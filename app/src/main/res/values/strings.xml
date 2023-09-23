@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">MyGithub</string>
+    <string name="searchbar_hint">Find someone</string>
+    <string name="this_activity">ini aktivitas\n</string>
+    <string name="nama_user">nama user</string>
+    <string name="gambar_user">gambar user</string>
+    <string name="followers">%s Followers</string>
+    <string name="following">%s Following</string>
+    <string name="nama_akun_github">nama akun github</string>
+    <string name="nama_real_user">nama real user</string>
+    <string name="tab_text_1">Follower</string>
+    <string name="tab_text_2">Following</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>
