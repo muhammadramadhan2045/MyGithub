@@ -1,12 +1,14 @@
 package com.example.mygithub.ui
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mygithub.data.response.DetailGithubResponse
 import com.example.mygithub.data.response.ItemsItem
 import com.example.mygithub.data.retrofit.ApiConfig
+import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -29,6 +31,12 @@ class DetailViewModel:ViewModel() {
 
     private val _isLoadingFollower= MutableLiveData<Boolean>()
     val isLoadingFollower: LiveData<Boolean> =_isLoadingFollower
+
+    private val _noFollower= MutableLiveData<Boolean>()
+    val noFollower: LiveData<Boolean> =_noFollower
+
+    private val _noFollowing= MutableLiveData<Boolean>()
+    val noFollowing: LiveData<Boolean> =_noFollowing
 
 
 
@@ -81,6 +89,7 @@ class DetailViewModel:ViewModel() {
 
     private fun getUserFollowing(name :String){
         _isLoadingFollowing.value=true
+        _noFollowing.value=false
         val client= ApiConfig.getApiService().followingUser(name)
         client.enqueue(object :Callback<List<ItemsItem>>{
             override fun onResponse(
@@ -91,6 +100,11 @@ class DetailViewModel:ViewModel() {
                 val list=response.body()
                 if (response.isSuccessful){
                     _followingUser.value=list!!
+
+                    if (list.isEmpty()){
+                        _noFollowing.value=true
+                        Log.d("List Following","Kosong")
+                    }
 
                 }
             }
@@ -104,6 +118,7 @@ class DetailViewModel:ViewModel() {
 
     private fun getUserFollower(name :String){
         _isLoadingFollower.value=true
+        _noFollower.value=false
         val client= ApiConfig.getApiService().followerUser(name)
         client.enqueue(object :Callback<List<ItemsItem>>{
             override fun onResponse(
@@ -114,6 +129,10 @@ class DetailViewModel:ViewModel() {
                 val list=response.body()
                 if (response.isSuccessful){
                     _followerUser.value=list!!
+                    if (list.isEmpty()){
+                        _noFollower.value=true
+                        Log.d("List Follower","Kosong")
+                    }
                 }
             }
 

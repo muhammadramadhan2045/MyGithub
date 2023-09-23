@@ -46,13 +46,16 @@ class FollowingFragment : Fragment() {
         binding.rvFollowing.layoutManager = layoutManager
 
         val detailViewModel=ViewModelProvider(requireActivity(),ViewModelProvider.NewInstanceFactory())[DetailViewModel::class.java]
-
         detailViewModel.isLoadingFollowing.observe(viewLifecycleOwner){
             showLoading(it)
         }
 
         detailViewModel.followingUser.observe(viewLifecycleOwner){
             setFollowingData(it)
+        }
+
+        detailViewModel.noFollowing.observe(viewLifecycleOwner){hasil->
+            showData(hasil)
         }
     }
 
@@ -77,6 +80,13 @@ class FollowingFragment : Fragment() {
         _binding=null
     }
 
+    private fun showData(loading:Boolean){
+        if (loading){
+            binding.noData.visibility=View.VISIBLE
+        }else{
+            binding.noData.visibility=View.GONE
+        }
+    }
     private fun showLoading(isLoading: Boolean) {
         if (isLoading) {
             binding.progressBar2.visibility = View.VISIBLE

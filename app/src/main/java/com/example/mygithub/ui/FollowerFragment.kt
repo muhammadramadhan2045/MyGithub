@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mygithub.R
@@ -46,8 +47,15 @@ class FollowerFragment : Fragment() {
             showLoading(it)
         }
 
+
+        detailViewModel.noFollower.observe(viewLifecycleOwner){hasil->
+            showData(hasil)
+        }
+
+
         detailViewModel.followerUser.observe(viewLifecycleOwner){
-            setFollowerData(it)
+                setFollowerData(it)
+
         }
 
 
@@ -73,6 +81,17 @@ class FollowerFragment : Fragment() {
         super.onDestroy()
         _binding=null
     }
+
+
+    private fun showData(loading:Boolean){
+     if (loading){
+        binding.noData.visibility=View.VISIBLE
+     }else{
+        binding.noData.visibility=View.GONE
+     }
+    }
+
+
 
     private fun showLoading(isLoading: Boolean) {
         if (isLoading) {
