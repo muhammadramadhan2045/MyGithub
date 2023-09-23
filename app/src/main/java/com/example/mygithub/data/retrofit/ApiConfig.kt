@@ -1,5 +1,6 @@
 package com.example.mygithub.data.retrofit
 
+import de.hdodenhof.circleimageview.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -12,7 +13,7 @@ class ApiConfig {
             val authInterceptor=Interceptor{chain->
                 val req=chain.request()
                 val requestHeaders=req.newBuilder()
-                    .addHeader("Authorization","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")
+                    .addHeader("Authorization",BuildConfig.KEY)
                     .build()
                 chain.proceed(requestHeaders)
 

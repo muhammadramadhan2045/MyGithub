@@ -8,12 +8,12 @@ android {
     compileSdk = 33
 
     defaultConfig {
+        buildConfigField("String", "KEY", "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")
         applicationId = "com.example.mygithub"
         minSdk = 24
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
