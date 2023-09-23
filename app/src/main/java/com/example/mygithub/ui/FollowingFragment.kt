@@ -7,15 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.mygithub.R
 import com.example.mygithub.data.response.ItemsItem
-import com.example.mygithub.data.retrofit.ApiConfig
 import com.example.mygithub.databinding.FragmentFollowingBinding
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+
 
 
 class FollowingFragment : Fragment() {

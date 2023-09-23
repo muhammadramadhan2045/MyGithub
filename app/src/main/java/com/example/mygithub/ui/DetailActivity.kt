@@ -11,13 +11,10 @@ import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.mygithub.R
 import com.example.mygithub.data.response.DetailGithubResponse
-import com.example.mygithub.data.retrofit.ApiConfig
 import com.example.mygithub.databinding.ActivityDetailBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+
 
 class DetailActivity : AppCompatActivity() {
 
@@ -48,7 +45,12 @@ class DetailActivity : AppCompatActivity() {
             intent.getStringExtra(EXTRA_USER)
         }
 
-        detailViewModel.setDataUser(dataUser.toString())
+
+        if(dataUser!=null){
+            detailViewModel.userDataName=dataUser
+        }else{
+            Log.d("DetailActivity","dataUser is null")
+        }
 
 
         detailViewModel.isLoading.observe(this){
@@ -72,6 +74,9 @@ class DetailActivity : AppCompatActivity() {
 
     }
 
+
+
+
     private fun setDetailData(responseBody: DetailGithubResponse) {
         binding.tvGithubName.text = responseBody.login
         binding.tvUsername.text = responseBody.name
@@ -89,6 +94,16 @@ class DetailActivity : AppCompatActivity() {
             binding.progressBar.visibility = View.GONE
         }
 
+    }
+
+    fun setDataName(dataUser: String) :String{
+        val name= if (Build.VERSION.SDK_INT >= 33) {
+            intent.getStringExtra(EXTRA_USER)
+        } else {
+            @Suppress("DEPRECATION")
+            intent.getStringExtra(EXTRA_USER)
+        }
+        return name.toString()
     }
 
 

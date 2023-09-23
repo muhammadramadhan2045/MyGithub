@@ -1,14 +1,12 @@
 package com.example.mygithub.ui
 
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mygithub.data.response.DetailGithubResponse
 import com.example.mygithub.data.response.ItemsItem
 import com.example.mygithub.data.retrofit.ApiConfig
-import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -43,9 +41,14 @@ class DetailViewModel:ViewModel() {
     private val _dataUser = MutableLiveData<String>()
     val dataUser: LiveData<String> = _dataUser
 
+    var userDataName: String? = null
+        set(value) {
+            field = value
+            setDataUser(value.toString())
+        }
+
     fun setDataUser(username: String) {
         _dataUser.value = username
-
     }
 
     init {

@@ -3,25 +3,19 @@ package com.example.mygithub.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mygithub.data.response.ItemsItem
-import com.example.mygithub.data.response.SearchGithubResponse
-import com.example.mygithub.data.retrofit.ApiConfig
 import com.example.mygithub.databinding.ActivityMainBinding
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     companion object {
         private const val TAG = "MainActivity"
-        private const val USERNAME = "muhammadramadhan"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
