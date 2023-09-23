@@ -1,6 +1,7 @@
 package com.example.mygithub.data.retrofit
 
-import de.hdodenhof.circleimageview.BuildConfig
+
+import com.google.android.material.internal.StaticLayoutBuilderConfigurer
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -13,7 +14,7 @@ class ApiConfig {
             val authInterceptor=Interceptor{chain->
                 val req=chain.request()
                 val requestHeaders=req.newBuilder()
-                    .addHeader("Authorization",BuildConfig.KEY)
+                    .addHeader("Authorization","YOUR TOKEN")
                     .build()
                 chain.proceed(requestHeaders)
 
