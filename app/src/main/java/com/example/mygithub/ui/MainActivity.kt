@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mygithub.data.response.ItemsItem
@@ -28,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
+        val mainViewModel=ViewModelProvider(this,ViewModelProvider.NewInstanceFactory())[MainViewModel::class.java]
 
         with(binding){
             searchView.setupWithSearchBar(searchBar)
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity() {
                     searchBar.text=searchView.text
                     searchView.hide()
                     Toast.makeText(this@MainActivity, searchView.text, Toast.LENGTH_SHORT).show()
-                    findUser(searchView.text.toString())
+                    mainViewModel.setUsername(searchView.text.toString())
                     false
                 }
         }
@@ -49,39 +50,24 @@ class MainActivity : AppCompatActivity() {
         binding.rvUsers.layoutManager = layoutManager
         val itemDecoration = DividerItemDecoration(this, layoutManager.orientation)
         binding.rvUsers.addItemDecoration(itemDecoration)
-        findUser(USERNAME)
 
 
+
+
+
+        mainViewModel.listUser.observe(this){
+            setUsersData(it)
+        }
+
+        mainViewModel.isLoading.observe(this){
+            showLoading(it)
+        }
 
 
 
 
     }
 
-    private fun findUser(name: String) {
-        showLoading(true)
-        val client=ApiConfig.getApiService().searchUser(name)
-        client.enqueue(object :Callback<SearchGithubResponse>{
-            override fun onResponse(
-                call: Call<SearchGithubResponse>,
-                response: Response<SearchGithubResponse>
-            ) {
-                showLoading(false)
-                if(response.isSuccessful){
-                    val responseBody = response.body()
-                    if (responseBody != null) {
-                        setUsersData(responseBody.items)
-
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<SearchGithubResponse>, t: Throwable) {
-               showLoading(false)
-                Log.e(TAG,"onFailure : ${t.message.toString()}")
-            }
-        })
-    }
 
     private fun setUsersData(items: List<ItemsItem>) {
         val adapter = UserAdapter()

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.annotation.StringRes
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.mygithub.R
@@ -37,7 +38,7 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
+        val detailViewModel=ViewModelProvider(this,ViewModelProvider.NewInstanceFactory())[DetailViewModel::class.java]
 
 
         val dataUser= if (Build.VERSION.SDK_INT >= 33) {
@@ -47,19 +48,17 @@ class DetailActivity : AppCompatActivity() {
             intent.getStringExtra(EXTRA_USER)
         }
 
-        //send data to fragment
-        val bundle = Bundle()
-        bundle.putString(EXTRA_USER, dataUser)
-        val followerFragment = FollowerFragment()
-        followerFragment.arguments = bundle
-        val followingFragment = FollowingFragment()
-        followingFragment.arguments = bundle
+        detailViewModel.setDataUser(dataUser.toString())
 
 
+        detailViewModel.isLoading.observe(this){
+            showLoading(it)
+        }
 
+        detailViewModel.detailUser.observe(this){
+            setDetailData(it)
+        }
 
-
-        getDetail(dataUser)
 
         val sectionsPagerAdapter = SectionsPagerAdapter(this)
         val viewPager:ViewPager2= binding.viewPager
@@ -73,35 +72,14 @@ class DetailActivity : AppCompatActivity() {
 
     }
 
-    private fun getDetail(username: String?) {
-        showLoading(true)
-        val client= ApiConfig.getApiService().detailUser(username.toString())
-        client.enqueue(object: Callback<DetailGithubResponse>{
-            override fun onResponse(
-                call: Call<DetailGithubResponse>,
-                response: Response<DetailGithubResponse>
-            ) {
-                showLoading(false)
-                if(response.isSuccessful){
-                    val responseBody = response.body()
-                    Log.d("Hasil ini bang :",responseBody.toString())
-                    if (responseBody != null) {
-                        binding.tvGithubName.text = responseBody.login
-                        binding.tvUsername.text = responseBody.name
-                        binding.tvFollowers.text = getString(R.string.followers,responseBody.followers.toString())
-                        binding.tvFollowing.text = getString(R.string.following,responseBody.following.toString())
-                        Glide.with(this@DetailActivity)
-                            .load(responseBody.avatarUrl)
-                            .into(binding.imgUserDetail)
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<DetailGithubResponse>, t: Throwable) {
-                showLoading(false)
-                Log.e("DetailActivity", "onFailure: ${t.message.toString()}" )
-            }
-        })
+    private fun setDetailData(responseBody: DetailGithubResponse) {
+        binding.tvGithubName.text = responseBody.login
+        binding.tvUsername.text = responseBody.name
+        binding.tvFollowers.text = getString(R.string.followers,responseBody.followers.toString())
+        binding.tvFollowing.text = getString(R.string.following,responseBody.following.toString())
+        Glide.with(this@DetailActivity)
+            .load(responseBody.avatarUrl)
+            .into(binding.imgUserDetail)
     }
 
     private fun showLoading(isLoading: Boolean) {
