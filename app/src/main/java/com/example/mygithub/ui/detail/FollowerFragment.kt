@@ -1,23 +1,24 @@
-package com.example.mygithub.ui
+package com.example.mygithub.ui.detail
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mygithub.data.response.ItemsItem
 import com.example.mygithub.databinding.FragmentFollowerBinding
+import com.example.mygithub.ui.UserAdapter
 
 
 class FollowerFragment : Fragment() {
 
-    private var _binding: FragmentFollowerBinding?=null
+    private var _binding: FragmentFollowerBinding? = null
     private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {    
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
     }
@@ -27,8 +28,8 @@ class FollowerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding= FragmentFollowerBinding.inflate(inflater,container,false)
-        val view=binding.root
+        _binding = FragmentFollowerBinding.inflate(inflater, container, false)
+        val view = binding.root
         return view
     }
 
@@ -39,35 +40,37 @@ class FollowerFragment : Fragment() {
         val layoutManager = LinearLayoutManager(context)
         binding.rvFollower.layoutManager = layoutManager
 
-        val detailViewModel=ViewModelProvider(requireActivity(), ViewModelProvider.NewInstanceFactory())[DetailViewModel::class.java]
+        val detailViewModel = ViewModelProvider(
+            requireActivity(),
+            ViewModelProvider.NewInstanceFactory()
+        )[DetailViewModel::class.java]
 
-        detailViewModel.isLoadingFollower.observe(viewLifecycleOwner){
+        detailViewModel.isLoadingFollower.observe(viewLifecycleOwner) {
             showLoading(it)
         }
 
 
-        detailViewModel.noFollower.observe(viewLifecycleOwner){hasil->
+        detailViewModel.noFollower.observe(viewLifecycleOwner) { hasil ->
             showData(hasil)
         }
 
 
-        detailViewModel.followerUser.observe(viewLifecycleOwner){
-                setFollowerData(it)
+        detailViewModel.followerUser.observe(viewLifecycleOwner) {
+            setFollowerData(it)
 
         }
-
 
 
     }
 
     private fun setFollowerData(list: List<ItemsItem?>) {
-        val adapter=UserAdapter()
+        val adapter = UserAdapter()
         adapter.submitList(list)
-        binding.rvFollower.adapter=adapter
-        adapter.setOnItemClickCallback(object :UserAdapter.OnItemClickCallback{
+        binding.rvFollower.adapter = adapter
+        adapter.setOnItemClickCallback(object : UserAdapter.OnItemClickCallback {
             override fun onItemClicked(data: ItemsItem) {
-                val mIntent= Intent(context,DetailActivity::class.java)
-                mIntent.putExtra(DetailActivity.EXTRA_USER,data.login)
+                val mIntent = Intent(context, DetailActivity::class.java)
+                mIntent.putExtra(DetailActivity.EXTRA_USER, data.login)
                 startActivity(mIntent)
             }
 
@@ -77,26 +80,21 @@ class FollowerFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        _binding=null
+        _binding = null
     }
 
 
-    private fun showData(loading:Boolean){
-     if (loading){
-        binding.noData.visibility=View.VISIBLE
-     }else{
-        binding.noData.visibility=View.GONE
-     }
+    private fun showData(loading: Boolean) {
+        if (loading) {
+            binding.noData.visibility = View.VISIBLE
+        } else {
+            binding.noData.visibility = View.GONE
+        }
     }
-
 
 
     private fun showLoading(isLoading: Boolean) {
-        if (isLoading) {
-            binding.progressBar1.visibility = View.VISIBLE
-        } else {
-            binding.progressBar1.visibility = View.GONE
-        }
+           binding.progressBar1.visibility = if (isLoading) View.VISIBLE else View.GONE
 
     }
 

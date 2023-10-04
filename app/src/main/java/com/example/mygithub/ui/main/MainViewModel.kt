@@ -1,17 +1,20 @@
-package com.example.mygithub.ui
+package com.example.mygithub.ui.main
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.mygithub.data.response.ItemsItem
 import com.example.mygithub.data.response.SearchGithubResponse
 import com.example.mygithub.data.retrofit.ApiConfig
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainViewModel :ViewModel() {
+class MainViewModel(private val pref: SettingPreferences) :ViewModel() {
 
     private val  _listUser=MutableLiveData<List<ItemsItem>>()
     val listUser: LiveData<List<ItemsItem>> =_listUser
@@ -24,6 +27,17 @@ class MainViewModel :ViewModel() {
         private const val USERNAME= "muhammadramadhan"
     }
 
+    fun getThemeSettings(): LiveData<Boolean> {
+        return pref.getThemeSetting().asLiveData()
+    }
+
+    fun saveThemeSetting(isDarkModeActive: Boolean) {
+        viewModelScope.launch {
+            pref.saveThemeSetting(isDarkModeActive)
+        }
+    }
+
+
 
 
 
@@ -32,6 +46,10 @@ class MainViewModel :ViewModel() {
     init {
         findUser(USERNAME)
     }
+
+
+
+
 
     fun setUsername(name:String){
         findUser(name)

@@ -2,14 +2,14 @@ package com.example.mygithub.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.mygithub.data.response.ItemsItem
 import com.example.mygithub.databinding.UserReviewBinding
 
-class UserAdapter:ListAdapter<ItemsItem,UserAdapter.UserViewHolder>(DIFF_CALLBACK){
+class UserAdapter : ListAdapter<ItemsItem, UserAdapter.UserViewHolder>(DIFF_CALLBACK) {
 
     private lateinit var onItemClickCallback: OnItemClickCallback
 
@@ -18,24 +18,23 @@ class UserAdapter:ListAdapter<ItemsItem,UserAdapter.UserViewHolder>(DIFF_CALLBAC
     }
 
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
-            val binding = UserReviewBinding.inflate(LayoutInflater.from(parent.context),parent,false)
-            return UserViewHolder(binding)
-        }
+        val binding = UserReviewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return UserViewHolder(binding)
+    }
 
-     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val user = getItem(position)
-         holder.bind(user)
-            holder.itemView.setOnClickListener {
-                onItemClickCallback.onItemClicked(getItem(holder.adapterPosition))
-            }
+        holder.bind(user)
+        holder.itemView.setOnClickListener {
+            onItemClickCallback.onItemClicked(getItem(holder.adapterPosition))
+        }
 
     }
 
 
-    class UserViewHolder(val binding: UserReviewBinding):RecyclerView.ViewHolder(binding.root) {
-        fun bind(user:ItemsItem){
+    class UserViewHolder(val binding: UserReviewBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(user: ItemsItem) {
             binding.tvName.text = user.login
             Glide.with(itemView.context)
                 .load(user.avatarUrl)
@@ -45,15 +44,14 @@ class UserAdapter:ListAdapter<ItemsItem,UserAdapter.UserViewHolder>(DIFF_CALLBAC
     }
 
 
-
-    companion object{
-        val DIFF_CALLBACK=object : DiffUtil.ItemCallback<ItemsItem>(){
+    companion object {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ItemsItem>() {
             override fun areItemsTheSame(oldItem: ItemsItem, newItem: ItemsItem): Boolean {
-                return oldItem==newItem
+                return oldItem == newItem
             }
 
             override fun areContentsTheSame(oldItem: ItemsItem, newItem: ItemsItem): Boolean {
-                return oldItem==newItem
+                return oldItem == newItem
             }
 
         }

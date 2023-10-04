@@ -15,5 +15,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="no_data">No Data</string>
+    <string name="action_settings">Setting</string>
+    <string name="dark_mode">Dark Mode </string>
+    <string name="action_favorite">Favorite</string>
+    <string name="tambah_data">tambah data</string>
 
 </resources>

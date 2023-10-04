@@ -1,20 +1,18 @@
 package com.example.mygithub.data.retrofit
 
-
-import com.google.android.material.internal.StaticLayoutBuilderConfigurer
+import com.example.mygithub.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class ApiConfig {
-    companion object{
-        fun getApiService():ApiService{
-            val authInterceptor=Interceptor{chain->
-                val req=chain.request()
-                val requestHeaders=req.newBuilder()
-                    .addHeader("Authorization","YOUR TOKEN")
+    companion object {
+        fun getApiService(): ApiService {
+            val authInterceptor = Interceptor { chain ->
+                val req = chain.request()
+                val requestHeaders = req.newBuilder()
+                    .addHeader("Authorization", BuildConfig.BASE_KEY)
                     .build()
                 chain.proceed(requestHeaders)
 
